@@ -29,7 +29,8 @@ yarn-error.log
 .history/*
 
 # Miscellaneous
-/.env
+/roadtrip-diagram.png
+.env
 /.angular/cache
 .sass-cache/
 /connect.lock
