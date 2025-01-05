@@ -12,6 +12,7 @@ import { Stroke, Style } from 'ol/style.js';
 import { Coordinate } from 'ol/coordinate';
 import MultiLineString from 'ol/geom/MultiLineString.js';
 import { RouteServiceService } from '../route-service.service';
+import { WeatherService } from '../weather.service';
 
 @Component({
   selector: 'open-map',
@@ -23,8 +24,9 @@ import { RouteServiceService } from '../route-service.service';
 export class OpenMapComponent implements OnInit {
   private map! : Map;
   transformedCoordinates: Coordinate[] = [];
+  forcastData: {} = {};
 
-  constructor(private routeService: RouteServiceService) {}
+  constructor(private routeService: RouteServiceService, private weatherService: WeatherService) {}
 
   ngOnInit(): void {
       this.map = new Map({
@@ -41,6 +43,7 @@ export class OpenMapComponent implements OnInit {
                 target: 'map'
               });
     this.buildRoute();
+    this.weather()
   }
 
   buildRoute(){
@@ -71,6 +74,12 @@ export class OpenMapComponent implements OnInit {
 
           this.map.addLayer(vectorLayer)
         })
+    }
+
+    weather(){
+      this.weatherService.getForcast().subscribe(
+        (weatherData: {}) => { this.forcastData = weatherData}
+      )
     }
 
   }

@@ -21,6 +21,7 @@
     "@angular/router": "^18.2.13",
     "@ngx-env/builder": "^19.0.4",
     "ol": "^10.3.1",
+    "openmeteo": "^1.1.4",
     "openrouteservice": "^0.1.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
