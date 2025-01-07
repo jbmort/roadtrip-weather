@@ -13,11 +13,11 @@ import { Observable, from } from 'rxjs';
 })
 export class RouteServiceService {
 
-  getRoute(): Observable<Coordinate[]> {
+  getRoute(): Observable<{transformedCoordinates: Coordinate[], tagLocations: Coordinate[] }> {
     return from(this.routeCall());
   }
 
-  private async routeCall(): Promise<Coordinate[]> {
+  private async routeCall(): Promise<{transformedCoordinates: Coordinate[], tagLocations: Coordinate[] }> {
     const ors = new Openrouteservice(RouteAPI.apiKey!);
     const directions = await ors.getDirections(
       Profile.DRIVING_CAR,
@@ -31,11 +31,30 @@ export class RouteServiceService {
         }
     );
     console.log(directions)
-      let pathCoordinates = directions.features[0].geometry.coordinates as Array<Array<number>>;
+      let minutes = directions.features[0].properties.segments[0].duration;
+      let totalTags = Math.ceil(minutes/3600);
 
+      let pathCoordinates = directions.features[0].geometry.coordinates as Array<Array<number>>;
+      
+      let locations: Coordinate[] = [];
+      let totalCoords = pathCoordinates.length
+      let distanceBetween = totalCoords / totalTags
+
+      function getTagLocations( Coordinates:Coordinate[]){
+        locations.push(Coordinates[0])
+        let coordNumber = Math.floor(distanceBetween)
+        for(let i = 0; i < totalTags - 1; i++ ){
+          locations.push(Coordinates[(coordNumber * (i + 1))]);
+        }
+        locations.push(Coordinates[totalCoords - 1])
+      }
+      
+      getTagLocations(pathCoordinates)
+    
 
      const transformedCoordinates = pathCoordinates.map(coord => fromLonLat([coord[0], coord[1]], 'EPSG:3857'));
 
-     return transformedCoordinates;
+     return {transformedCoordinates: transformedCoordinates , tagLocations: locations };
   }
+
 }

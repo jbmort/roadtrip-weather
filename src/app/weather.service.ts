@@ -65,20 +65,20 @@ private async forcast(): Promise<{}> {
 };
 
 // `weatherData` now contains a simple structure with arrays for datetime and weather data
-for (let i = 0; i < weatherData.hourly.time.length; i++) {
-	console.log(
-		weatherData.hourly.time[i].toISOString(),
-		weatherData.hourly.temperature2m[i],
-		weatherData.hourly.apparentTemperature[i],
-		weatherData.hourly.precipitationProbability[i],
-		weatherData.hourly.precipitation[i],
-		weatherData.hourly.snowfall[i],
-		weatherData.hourly.snowDepth[i],
-		weatherData.hourly.cloudCover[i],
-		weatherData.hourly.windSpeed10m[i],
-		weatherData.hourly.isDay[i]
-	);
-}
+// for (let i = 0; i < weatherData.hourly.time.length; i++) {
+// 	console.log(
+// 		weatherData.hourly.time[i].toISOString(),
+// 		weatherData.hourly.temperature2m[i],
+// 		weatherData.hourly.apparentTemperature[i],
+// 		weatherData.hourly.precipitationProbability[i],
+// 		weatherData.hourly.precipitation[i],
+// 		weatherData.hourly.snowfall[i],
+// 		weatherData.hourly.snowDepth[i],
+// 		weatherData.hourly.cloudCover[i],
+// 		weatherData.hourly.windSpeed10m[i],
+// 		weatherData.hourly.isDay[i]
+// 	);
+// }
 return weatherData
 }
 }

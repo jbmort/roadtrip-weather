@@ -48,10 +48,11 @@ export class OpenMapComponent implements OnInit {
 
   buildRoute(){
       this.routeService.getRoute().subscribe(
-        (coordinates: Coordinate[]) => {
-          this.transformedCoordinates = coordinates;
-          const multiLineString = new MultiLineString([coordinates]);
+        (data: {transformedCoordinates: Coordinate[], tagLocations: Coordinate[] }) => {
+          this.transformedCoordinates = data.transformedCoordinates;
+          const multiLineString = new MultiLineString([this.transformedCoordinates]);
 
+          console.log(data.tagLocations)
 
           const feature = new Feature({
             geometry: multiLineString
