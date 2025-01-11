@@ -8,7 +8,7 @@ import { Observable, from } from 'rxjs';
 export class WeatherService {
 
   
-
+// get forcast data for point based on coordinate point
 getForcast(lat: number, long: number): Observable<{}> {
   return from(this.forcast(lat, long));
 }
