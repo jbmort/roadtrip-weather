@@ -9,15 +9,19 @@ export class WeatherService {
 
   
 
-getForcast(): Observable<{}> {
-  return from(this.forcast());
+getForcast(lat: number, long: number): Observable<{}> {
+  return from(this.forcast(lat, long));
 }
 
-private async forcast(): Promise<{}> {
+private async forcast(lat: number, long: number): Promise<{}> {
 	
   const params = {
-    "latitude": 41.6117,
-    "longitude": -93.8852,
+    "latitude": lat
+    // 41.6117
+    ,
+    "longitude": long 
+    // -93.8852
+    ,
     "hourly": ["temperature_2m", "apparent_temperature", "precipitation_probability", "precipitation", "snowfall", "snow_depth", "cloud_cover", "wind_speed_10m", "is_day"],
     "temperature_unit": "fahrenheit",
     "wind_speed_unit": "mph",

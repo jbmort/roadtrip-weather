@@ -24,7 +24,7 @@ import { WeatherService } from '../weather.service';
 export class OpenMapComponent implements OnInit {
   private map! : Map;
   transformedCoordinates: Coordinate[] = [];
-  forcastData: {} = {};
+  forcastData: Object[] = [];
 
   constructor(private routeService: RouteServiceService, private weatherService: WeatherService) {}
 
@@ -43,7 +43,6 @@ export class OpenMapComponent implements OnInit {
                 target: 'map'
               });
     this.buildRoute();
-    this.weather()
   }
 
   buildRoute(){
@@ -52,7 +51,18 @@ export class OpenMapComponent implements OnInit {
           this.transformedCoordinates = data.transformedCoordinates;
           const multiLineString = new MultiLineString([this.transformedCoordinates]);
 
-          console.log(data.tagLocations)
+          // Collect weather data into forcastData Array along with coordinates
+          for (let point of data.tagLocations){
+              this.weatherService.getForcast(point[1], point[0]).subscribe(
+                  (weatherData: {}) => {
+                    let pointData = {
+                      coordinate: [point[0], point[1]],
+                      weatherData: weatherData
+                    }
+                    this.forcastData.push(pointData)
+                  }
+              )
+          }
 
           const feature = new Feature({
             geometry: multiLineString
@@ -71,16 +81,10 @@ export class OpenMapComponent implements OnInit {
               })
             })
           });
-          console.log(vectorSource.getFeatures(), feature.getGeometry())
+          console.log(vectorSource.getFeatures(), feature.getGeometry(), this.forcastData)
 
           this.map.addLayer(vectorLayer)
         })
-    }
-
-    weather(){
-      this.weatherService.getForcast().subscribe(
-        (weatherData: {}) => { this.forcastData = weatherData}
-      )
     }
 
   }
