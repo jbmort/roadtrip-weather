@@ -92,6 +92,7 @@ async loadData(data: {transformedCoordinates: Coordinate[],
       return forcastData
     };
 
+// Loads weather data into markers and loads markers into a single layer on the map
  async createMarkers(this: any, map: Map, data: {transformedCoordinates: Coordinate[]; tagLocations: Coordinate[]},
       weatherService : WeatherService){
     let forcastData =  await this.loadData(data, weatherService)
@@ -99,9 +100,9 @@ async loadData(data: {transformedCoordinates: Coordinate[],
     let weatherMarkers = []
 
     for (let i = 0; i < forcastData.length; ++i ){
-        let long = forcastData[i]!.coordinate[0]
-        let lat = forcastData[i]!.coordinate[1]
-        let tempData = String(Math.round(forcastData[i]!.weatherData.hourly.temperature2m[0]))
+        let long = forcastData[i].coordinate[0]
+        let lat = forcastData[i].coordinate[1]
+        let tempData = String(Math.round(forcastData[i].weatherData.hourly.temperature2m[0]))
         
         const newMarker = this.addMarker([long, lat], tempData )
         weatherMarkers.push(newMarker)
@@ -114,7 +115,7 @@ async loadData(data: {transformedCoordinates: Coordinate[],
     this.map.addLayer(markLayer)
 }
   
-
+// Creates the route layer with route line and calls for weather marker creation
   buildRoute(){
       this.routeService.getRoute().subscribe(
         (data: {transformedCoordinates: Coordinate[], tagLocations: Coordinate[] }) => {
@@ -136,7 +137,7 @@ async loadData(data: {transformedCoordinates: Coordinate[],
             style: new Style({
               stroke: new Stroke({
                 color: 'red',
-                width: 4
+                width: 3
               })
             })
           });
@@ -145,8 +146,9 @@ async loadData(data: {transformedCoordinates: Coordinate[],
         })
     }
 
+// Creates individual marker points with weather data icons and returns the marker
     addMarker([lon, lat]: number[], temp: string){
-      var mar = new Feature({
+      var marker = new Feature({
         geometry: new Point(fromLonLat([lon, lat])),
       });
       var iconBlue = new Style({
@@ -172,9 +174,9 @@ async loadData(data: {transformedCoordinates: Coordinate[],
           })
       })
       });
-      mar.setStyle(iconBlue);
+      marker.setStyle(iconBlue);
 
-      return mar;
+      return marker;
     }
   
 
