@@ -2,18 +2,55 @@ import { Injectable } from '@angular/core';
 import { fetchWeatherApi } from 'openmeteo';
 import { Observable, from } from 'rxjs';
 
+type weatherDataType = {
+  hourly: {
+    apparentTemperature: Float32Array,
+    cloudCover: Float32Array,
+    isDay: Float32Array,
+    precipitation: Float32Array,
+    precipitationProbability: Float32Array
+    snowDepth: Float32Array,
+    snowfall: Float32Array,
+    temperature2m: Float32Array,
+    time: Array<Date>,
+    windSpeed10m: Float32Array,
+  }
+}
+type pointDataType = {
+  coordinate: [number, number],
+  weatherData: weatherDataType
+};
+
 @Injectable({
   providedIn: 'root'
 })
 export class WeatherService {
+  
+
+  constructor(){
+    type weatherDataType = {
+      hourly: {
+        apparentTemperature: Float32Array,
+        cloudCover: Float32Array,
+        isDay: Float32Array,
+        precipitation: Float32Array,
+        precipitationProbability: Float32Array
+        snowDepth: Float32Array,
+        snowfall: Float32Array,
+        temperature2m: Float32Array,
+        time: Array<Date>,
+        windSpeed10m: Float32Array,
+      }
+    }
+  }
 
   
 // get forcast data for point based on coordinate point
-getForcast(lat: number, long: number): Observable<{}> {
+getForcast(lat: number, long: number): Observable<weatherDataType> {
   return from(this.forcast(lat, long));
 }
 
-private async forcast(lat: number, long: number): Promise<{}> {
+private async forcast(lat: number, long: number): Promise<weatherDataType> {
 	
   const params = {
     "latitude": lat
@@ -47,10 +84,23 @@ private async forcast(lat: number, long: number): Promise<{}> {
   const longitude = response.longitude();
 
   const hourly = response.hourly()!;
+  // type weatherDataType = {
+  //   hourly: {
+  //     apparentTemperature: Float32Array,
+  //     cloudCover: Float32Array,
+  //     isDay: Float32Array,
+  //     precipitation: Float32Array,
+  //     precipitationProbability: Float32Array
+  //     snowDepth: Float32Array,
+  //     snowfall: Float32Array,
+  //     temperature2m: Float32Array,
+  //     time: Array<Date>,
+  //     windSpeed10m: Float32Array,
+  //   }
+  // }
 
   // Note: The order of weather variables in the URL query and the indices below need to match!
-  const weatherData = {
-
+  const weatherData: weatherDataType = {
     hourly: {
       time: range(Number(hourly.time()), Number(hourly.timeEnd()), hourly.interval()).map(
         (t) => new Date((t + utcOffsetSeconds) * 1000)
@@ -83,6 +133,6 @@ private async forcast(lat: number, long: number): Promise<{}> {
 // 		weatherData.hourly.isDay[i]
 // 	);
 // }
-return weatherData
+return weatherData;
 }
 }
