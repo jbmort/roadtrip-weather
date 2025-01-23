@@ -82,7 +82,8 @@ async loadData(data: {transformedCoordinates: Coordinate[],
                 coordinate: [point[0], point[1]],
                 weatherData: weatherData
               };
-                forcastData.push(pointData);
+              // keep data points in order with splice
+                forcastData.splice(data.tagLocations.indexOf(point), 0,pointData);
               resolve();
             }
           );
@@ -102,8 +103,9 @@ async loadData(data: {transformedCoordinates: Coordinate[],
     for (let i = 0; i < forcastData.length; ++i ){
         let long = forcastData[i].coordinate[0]
         let lat = forcastData[i].coordinate[1]
-        let tempData = String(Math.round(forcastData[i].weatherData.hourly.temperature2m[0]))
-        
+        let position = forcastData.indexOf(forcastData[i])
+        let tempData = String(Math.round(forcastData[i].weatherData.hourly.temperature2m[position]))
+        console.log(long, forcastData[i].weatherData.hourly.temperature2m)
         const newMarker = this.addMarker([long, lat], tempData )
         weatherMarkers.push(newMarker)
     };
