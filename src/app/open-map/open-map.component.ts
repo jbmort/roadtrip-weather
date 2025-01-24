@@ -7,7 +7,7 @@ import OSM from 'ol/source/OSM';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { fromLonLat } from 'ol/proj';
-import { Feature } from 'ol';
+import { Collection, Feature } from 'ol';
 import { Fill, Icon, Stroke, Style, Text } from 'ol/style.js';
 import { Coordinate } from 'ol/coordinate';
 import MultiLineString from 'ol/geom/MultiLineString.js';
@@ -15,6 +15,7 @@ import { RouteServiceService } from '../route-service.service';
 import { WeatherService } from '../weather.service';
 import { Point } from 'ol/geom';
 import { SearchService } from '../search.service';
+import BaseLayer from 'ol/layer/Base';
 
 type forcastDataType = pointDataType[];
 type weatherDataType = {
@@ -73,8 +74,9 @@ export class OpenMapComponent implements OnInit {
     this.buildRoute(this.searchData);
     this.searchService.coordinate.subscribe(
       (search) => {
+        this.removeRoute();
         this.searchData = search;
-        this.buildRoute(this.searchData)
+        this.buildRoute(this.searchData);
       }
     )
 
@@ -193,5 +195,14 @@ async loadData(data: {transformedCoordinates: Coordinate[],
       return marker;
     }
   
+  // clear previous route layers to prepare for new route insertion
+  removeRoute(){
+    let layers  = this.map.getAllLayers();
+
+    if(layers.length > 1){
+      this.map.removeLayer(layers[1]);
+      this.map.removeLayer(layers[2]);
+    }
+  }
 
 }
