@@ -14,6 +14,7 @@ import MultiLineString from 'ol/geom/MultiLineString.js';
 import { RouteServiceService } from '../route-service.service';
 import { WeatherService } from '../weather.service';
 import { Point } from 'ol/geom';
+import { SearchService } from '../search.service';
 
 type forcastDataType = pointDataType[];
 type weatherDataType = {
@@ -46,8 +47,12 @@ type pointDataType = {
 export class OpenMapComponent implements OnInit {
   private map! : Map;
   transformedCoordinates: Coordinate[] = [];
-  constructor(private routeService: RouteServiceService, private weatherService: WeatherService) {
-  }
+  searchData: number[][] = [];
+
+  constructor(private routeService: RouteServiceService,
+              private weatherService: WeatherService,
+              private searchService: SearchService) {};
+
   forcastData: Partial<forcastDataType> = []
           
     ngOnInit(): void {
@@ -65,7 +70,14 @@ export class OpenMapComponent implements OnInit {
           ],
           target: 'map'
         });
-    this.buildRoute();
+    this.buildRoute(this.searchData);
+    this.searchService.coordinate.subscribe(
+      (search) => {
+        this.searchData = search;
+        this.buildRoute(this.searchData)
+      }
+    )
+
   };
 
 // Collect weather data into forcastData Array along with coordinates
@@ -118,8 +130,8 @@ async loadData(data: {transformedCoordinates: Coordinate[],
 }
   
 // Creates the route layer with route line and calls for weather marker creation
-  buildRoute(){
-      this.routeService.getRoute().subscribe(
+  buildRoute(points: number[][]){
+      this.routeService.getRoute(points).subscribe(
         (data: {transformedCoordinates: Coordinate[], tagLocations: Coordinate[] }) => {
           this.transformedCoordinates = data.transformedCoordinates;
           

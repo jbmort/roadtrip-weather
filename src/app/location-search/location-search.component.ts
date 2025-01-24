@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { SearchService } from '../search.service';
 
 @Component({
   selector: 'app-location-search',
@@ -10,13 +11,19 @@ import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 })
 export class LocationSearchComponent {
 
+  constructor( private searchService: SearchService){}
+
   routeForm = new FormGroup({
     start: new FormControl(''),
     ending: new FormControl('')})
 
 
   onSearch(){
-    console.log(this.routeForm.value)
+    console.log(this.routeForm.value);
+    let start = this.routeForm.value.start!.toString();
+    let end = this.routeForm.value.ending!.toString();
+    if(start != null && end != null){
+    this.searchService.search(start, end);}
   }
 
   updateStart(){
