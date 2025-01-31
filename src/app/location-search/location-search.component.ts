@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { SearchService } from '../search.service';
+import { GeocodeService } from '../geocode.service';
 
 @Component({
   selector: 'app-location-search',
@@ -11,7 +12,7 @@ import { SearchService } from '../search.service';
 })
 export class LocationSearchComponent {
 
-  constructor( private searchService: SearchService){}
+  constructor( private searchService: SearchService, private geocodeService: GeocodeService){}
 
   routeForm = new FormGroup({
     start: new FormControl(''),
@@ -28,13 +29,15 @@ export class LocationSearchComponent {
 
   updateStart(){
     if(this.routeForm.value.start?.length! > 3){
-    console.log(this.routeForm.value.start)
+    console.log(this.routeForm.value.start);
+    this.geocodeService.autoComplete(this.routeForm.value.start!)
     }
   }
 
   updateEnd(){
     if(this.routeForm.value.ending?.length! > 3){
-    console.log(this.routeForm.value.ending)
+    console.log(this.routeForm.value.ending);
+    this.geocodeService.autoComplete(this.routeForm.value.ending!)
     }
   }
 
