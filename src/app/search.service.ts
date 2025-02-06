@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Coordinate } from 'ol/coordinate';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({

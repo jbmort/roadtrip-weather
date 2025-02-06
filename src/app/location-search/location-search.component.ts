@@ -30,9 +30,12 @@ export class LocationSearchComponent {
   updateStart(){
     if(this.routeForm.value.start?.length! > 3){
     console.log(this.routeForm.value.start);
-    this.geocodeService.autoComplete(this.routeForm.value.start!)
+    this.geocodeService.autoComplete(this.routeForm.value.start!).subscribe((locations)=>{
+      for(let i = 0; i < locations.length; i++){
+      console.log(locations[i].title)}
+    })
     }
-  }
+}
 
   updateEnd(){
     if(this.routeForm.value.ending?.length! > 3){
