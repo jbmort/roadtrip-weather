@@ -8,10 +8,10 @@
 
     <mat-form-field class="example-full-width">
       <mat-label>Starting Point</mat-label>
-      <input type="text" matInput [matAutocomplete]="auto" [formControl]="start" (input)="updateStart()">
+      <input type="text" matInput [matAutocomplete]="auto" [formControl]="start" (optionSelected)="onOptionSelected($event)">
       <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
         @for (location of locationList | async; track location.title) {
-          <mat-option  [value]="location.coordinates">{{location.title}}</mat-option>
+          <mat-option  [value]="location">{{location.title}}</mat-option>
         }
       </mat-autocomplete>
     </mat-form-field>

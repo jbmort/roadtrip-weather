@@ -68,7 +68,12 @@ export class LocationSearchComponent implements OnInit {
 
   displayFn(user: {title: string, coordinates: [Number, Number]}): string {
     console.log(user.title)
-    return user && user.title ? user.title : '';
+    return user.title;
+  }
+
+  onOptionSelected(event: any) {
+    console.log(event.option.value);
+    this.start.setValue(event.option.value);
   }
 
 }
