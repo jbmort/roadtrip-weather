@@ -71,15 +71,16 @@ export class OpenMapComponent implements OnInit {
           ],
           target: 'map'
         });
-    this.buildRoute(this.searchData);
+    // this.buildRoute(this.searchData);
     this.searchService.coordinate.subscribe(
       (search) => {
         this.removeRoute();
+        if (search.length > 1){
         this.searchData = search;
         this.buildRoute(this.searchData);
+        }
       }
     )
-
   };
 
 // Collect weather data into forcastData Array along with coordinates

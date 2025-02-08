@@ -23,9 +23,7 @@ export class RouteServiceService {
       Profile.DRIVING_CAR,
       DirectionsFormat.GEOJSON,
         { 
-
             coordinates: search
-            
             // [
             //     [-93.8746, 41.61118],
             //     [-91.55069198363068, 41.661711208216715]

@@ -1,7 +1,19 @@
-<form [formGroup]="routeForm" (ngSubmit)="onSearch()">
-    <label for="start">Start: </label>
+<form class="example-form" >
+<!-- (ngSubmit)="onSearch()" -->
+
+    <!-- <label for="start">Start: </label>
     <input id="start" type="text" (input)="updateStart()" formControlName="start">
     <label for="ending">End: </label>
-    <input id="ending" type="text" (input)="updateEnd()" formControlName="ending">
+    <input id="ending" type="text" (input)="updateEnd()" formControlName="ending"> -->
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Starting Point</mat-label>
+      <input type="text" matInput [matAutocomplete]="auto" [formControl]="start" (input)="updateStart()">
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+        @for (location of locationList | async; track location.title) {
+          <mat-option  [value]="location.coordinates">{{location.title}}</mat-option>
+        }
+      </mat-autocomplete>
+    </mat-form-field>
     <button type="submit" >Find Route</button>
   </form>

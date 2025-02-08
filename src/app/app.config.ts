@@ -2,6 +2,7 @@ import { ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 // import { mapProvider } from './roadtrip/map/provider.ts';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 import Map from 'ol/Map';
 import View from 'ol/View';
@@ -31,7 +32,8 @@ import { routes } from './app.routes';
 export const appConfig: ApplicationConfig = {
   providers: [provideRouter(routes),
               provideHttpClient(),
-              mapProvider
+              mapProvider,
+              provideAnimations(),
               
   ]
   

@@ -1,20 +1,23 @@
 import { Injectable } from '@angular/core';
 import Openrouteservice from 'openrouteservice';
 import { RouteAPI } from '../../enviroments/environment';
-import { from, Observable } from 'rxjs';
+import { BehaviorSubject, from, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GeocodeService {
+
+  private locationList = new BehaviorSubject<{title:string, coordinates: [Number, Number]}[]>([]);
+  autoCompletion = this.locationList.asObservable();
   constructor() { }
 
-  autoComplete(text: string):Observable<{title:string, coordinates: [Number, Number]}[]>{
-    return from(this.getLocations(text))
-  }
+  // autoComplete(text: string):Observable<{title:string, coordinates: [Number, Number]}[]>{
+  //   return from(this.getLocations(text))
+  // }
 
   
-  private async getLocations(text: string){
+  async autoComplete(text: string){
     let ors = new Openrouteservice(RouteAPI.apiKey!);
     const results = await ors.getGeocodeAutocomplete(text);
     let locations:Array<{title:string, coordinates:[Number, Number]}> = [];
@@ -26,7 +29,7 @@ export class GeocodeService {
       locations.push({title: name, coordinates: coords})
     }
     // console.log(locations)
-    return locations
+    this.locationList.next(locations)
   }
 
   async geocode(location: string){
