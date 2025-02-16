@@ -18,15 +18,19 @@ import { debounceTime, filter, Observable, switchMap, tap } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LocationSearchComponent implements OnInit {
-  locationList!: Observable<{title: string, coordinates: [Number, Number]}[]>;
-  locations: {title: string, coordinates: [Number, Number]}[] = [];
+
+  startingList!: Observable<{title: string, coordinates: [Number, Number]}[]>;
+  endingList!: Observable<{title: string, coordinates: [Number, Number]}[]>;
+  startLocations: {title: string, coordinates: [Number, Number]}[] = [];
+  endLocations: {title: string, coordinates: [Number, Number]}[] = [];
+
   
   constructor( private searchService: SearchService, private geocodeService: GeocodeService){};
 
   
 
   ngOnInit(): void {
-      this.locationList = this.start.valueChanges.pipe(
+      this.startingList = this.start.valueChanges.pipe(
         debounceTime(300),
         filter((value): value is string => typeof value === 'string' && value.length > 2),
         tap((title) => {
@@ -35,8 +39,21 @@ export class LocationSearchComponent implements OnInit {
         switchMap(() => this.geocodeService.autoCompletion)
       );
 
-      this.locationList.subscribe(
-        (list) => {this.locations = list}
+      this.endingList = this.ending.valueChanges.pipe(
+        debounceTime(300),
+        filter((value): value is string => typeof value === 'string' && value.length > 2),
+        tap((title) => {
+          this.geocodeService.autoComplete(title);
+        }),
+        switchMap(() => this.geocodeService.autoCompletion)
+      );
+
+      this.startingList.subscribe(
+        (list) => {this.startLocations = list}
+      )
+
+      this.endingList.subscribe(
+        (list) => {this.endLocations = list}
       )
   }
 
@@ -55,7 +72,7 @@ export class LocationSearchComponent implements OnInit {
   updateStart(){
     if(this.start.value?.length! > 3){
     console.log(this.start.value);
-    console.log(this.locations)
+    console.log(this.startLocations)
     }}
 
 
@@ -75,5 +92,9 @@ export class LocationSearchComponent implements OnInit {
     console.log(event.option.value);
     this.start.setValue(event.option.value);
   }
+  endOptionSelected(event: any) {
+    console.log(event.option.value);
+    this.ending.setValue(event.option.value);
+    }
 
 }
