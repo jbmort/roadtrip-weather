@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SearchService } from '../search.service';
 import { GeocodeService } from '../geocode.service';
 
@@ -27,7 +27,6 @@ export class LocationSearchComponent implements OnInit {
   
   constructor( private searchService: SearchService, private geocodeService: GeocodeService){};
 
-  
 
   ngOnInit(): void {
       this.startingList = this.start.valueChanges.pipe(
@@ -57,23 +56,28 @@ export class LocationSearchComponent implements OnInit {
       )
   }
 
-    start =  new FormControl('')
-    ending = new FormControl('')
 
-  // onSearch(){
-  //   console.log(this.routeForm);
-  //   let start = this.routeForm.value.start!.toString();
-  //   let end = this.routeForm.value.ending!.toString();
-  //   if(start != null && end != null){
-  //   this.searchService.search(start, end);}
-  // }
+    start = new FormControl<{title: string, coordinates: Number[]} | string>('', [Validators.required]);
+    ending = new FormControl<{title: string, coordinates: Number[]} | string>('', [Validators.required]);
+ 
+  onSearch(){
+    let startingPoint;
+    let endingPoint;
+
+    startingPoint = this.start.value as {title: string, coordinates: Number[]};
+    endingPoint = this.ending.value as {title: string, coordinates: Number[]};
+
+    console.log(startingPoint.coordinates, endingPoint.coordinates)
+
+    this.searchService.search(startingPoint.coordinates, endingPoint.coordinates)
+  }
 
 
-  updateStart(){
-    if(this.start.value?.length! > 3){
-    console.log(this.start.value);
-    console.log(this.startLocations)
-    }}
+  // updateStart(){
+  //   if(this.start.value?.length! > 3){
+  //   console.log(this.start.value);
+  //   console.log(this.startLocations)
+  //   }}
 
 
   // updateEnd(){
@@ -83,17 +87,20 @@ export class LocationSearchComponent implements OnInit {
   //   }
   // }
 
-  displayFn(user: {title: string, coordinates: [Number, Number]}): string {
-    console.log(user.title)
-    return user.title;
+  displayFn(location: {title: string, coordinates: Number[]} | string): string {
+    return typeof location === 'object' ? location.title : location;
+  }
+
+
+  endDisplayFn(location: {title: string, coordinates: Number[]} | string): string {
+    return typeof location === 'object' ? location.title : location;
   }
 
   onOptionSelected(event: any) {
-    console.log(event.option.value);
     this.start.setValue(event.option.value);
   }
+
   endOptionSelected(event: any) {
-    console.log(event.option.value);
     this.ending.setValue(event.option.value);
     }
 

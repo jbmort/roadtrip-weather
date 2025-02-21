@@ -5,31 +5,31 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class SearchService {
-  private query = new BehaviorSubject<number[][]>([]);
+  private query = new BehaviorSubject<Number[][]>([]);
   coordinate = this.query.asObservable();
 
   constructor() { }
 
-  search(start: string, end: string){
-    let startNums = start.split(",");
-    let endNums = end.split(",");
+  search(start: Number[], end: Number[]){
+    // let startNums = start.split(",");
+    // let endNums = end.split(",");
 
-    let starting = startNums.map(
-      (num)=>{ 
-        let newNum = parseFloat(num.trim());
-        return newNum;
-      }
-    )
+    // let starting = startNums.map(
+    //   (num)=>{ 
+    //     let newNum = parseFloat(num.trim());
+    //     return newNum;
+    //   }
+    // )
 
-    let ending = endNums.map(
-      (num)=>{ 
-        let newNum = parseFloat(num.trim());
-        return newNum;
-      }
-    )
-    console.log(starting, ending);
+    // let ending = endNums.map(
+    //   (num)=>{ 
+    //     let newNum = parseFloat(num.trim());
+    //     return newNum;
+    //   }
+    // )
+    // console.log(starting, ending);
 
-    let search = [starting, ending];
+    let search = [start, end];
     this.query.next(search)
   }
 }

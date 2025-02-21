@@ -20,7 +20,7 @@ export class GeocodeService {
   async autoComplete(text: string){
     let ors = new Openrouteservice(RouteAPI.apiKey!);
     const results = await ors.getGeocodeAutocomplete(text);
-    let locations:Array<{title:string, coordinates:[Number, Number]}> = [];
+    let locations:Array<{title:string, coordinates:[number, number]}> = [];
     for (let i = 0; i < results.features.length; i++){
       let item: any;
       item = results.features[i];
@@ -28,7 +28,6 @@ export class GeocodeService {
       let coords = item.geometry.coordinates;
       locations.push({title: name, coordinates: coords})
     }
-    // console.log(locations)
     this.locationList.next(locations)
   }
 

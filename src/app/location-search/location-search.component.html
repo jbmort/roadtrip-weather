@@ -1,11 +1,7 @@
-<form class="example-form" >
-<!-- (ngSubmit)="onSearch()" -->
+<form class="example-form">
 
-    <!-- <label for="start">Start: </label>
-    <input id="start" type="text" (input)="updateStart()" formControlName="start">
-    <label for="ending">End: </label>
-    <input id="ending" type="text" (input)="updateEnd()" formControlName="ending"> -->
 <div class="row">
+
     <mat-form-field class="col-md-6">
       <mat-label>Starting Point</mat-label>
       <input type="text" matInput [matAutocomplete]="auto" [formControl]="start" (optionSelected)="onOptionSelected($event)">
@@ -15,17 +11,20 @@
         }
       </mat-autocomplete>
     </mat-form-field>
+
     <mat-form-field class="col-md-6">
       <mat-label>Ending Point</mat-label>
       <input type="text" matInput [matAutocomplete]="autoEnding" [formControl]="ending" (optionSelected)="endOptionSelected($event)">
-      <mat-autocomplete #autoEnding="matAutocomplete" [displayWith]="displayFn">
+      <mat-autocomplete #autoEnding="matAutocomplete" [displayWith]="endDisplayFn">
         @for (location of endingList | async; track location.title) {
           <mat-option  [value]="location">{{location.title}}</mat-option>
         }
       </mat-autocomplete>
     </mat-form-field>
-</div>
-    <div class="row justify-content-end">
-    <button class=" col-md-3 btn btn-info m-3 mt-0" type="submit" >Find Route</button>
-    </div>
+
+  </div>
+  <div class="row justify-content-end">
+    <button class=" col-md-3 btn btn-info m-3 mt-0" type="button" (click)="onSearch()" >Find Route</button>
+  </div>
+  
   </form>

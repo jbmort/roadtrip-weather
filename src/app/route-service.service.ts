@@ -13,11 +13,11 @@ import { Observable, from } from 'rxjs';
 })
 export class RouteServiceService {
 
-  getRoute(search: number[][]): Observable<{transformedCoordinates: Coordinate[], tagLocations: Coordinate[] }> {
+  getRoute(search: Number[][]): Observable<{transformedCoordinates: Coordinate[], tagLocations: Coordinate[] }> {
     return from(this.routeCall(search));
   }
 
-  private async routeCall(search: number[][]): Promise<{transformedCoordinates: Coordinate[], tagLocations: Coordinate[] }> {
+  private async routeCall(search: Number[][]): Promise<{transformedCoordinates: Coordinate[], tagLocations: Coordinate[] }> {
     const ors = new Openrouteservice(RouteAPI.apiKey!);
     const directions = await ors.getDirections(
       Profile.DRIVING_CAR,

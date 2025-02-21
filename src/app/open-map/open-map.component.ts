@@ -48,7 +48,7 @@ type pointDataType = {
 export class OpenMapComponent implements OnInit {
   private map! : Map;
   transformedCoordinates: Coordinate[] = [];
-  searchData: number[][] = [];
+  searchData: Number[][] = [];
 
   constructor(private routeService: RouteServiceService,
               private weatherService: WeatherService,
@@ -133,7 +133,7 @@ async loadData(data: {transformedCoordinates: Coordinate[],
 }
   
 // Creates the route layer with route line and calls for weather marker creation
-  buildRoute(points: number[][]){
+  buildRoute(points: Number[][]){
       this.routeService.getRoute(points).subscribe(
         (data: {transformedCoordinates: Coordinate[], tagLocations: Coordinate[] }) => {
           this.transformedCoordinates = data.transformedCoordinates;
