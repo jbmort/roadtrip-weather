@@ -120,8 +120,15 @@ async loadData(data: {transformedCoordinates: Coordinate[],
         let lat = forcastData[i].coordinate[1]
         let position = forcastData.indexOf(forcastData[i])
         let tempData = String(Math.round(forcastData[i].weatherData.hourly.temperature2m[position]))
+        let condition: string = this.defineCondition(forcastData[i].weatherData.hourly.cloudCover[position],
+                                                     forcastData[i].weatherData.hourly.isDay[position],
+                                                     forcastData[i].weatherData.hourly.precipitation[position],
+                                                     forcastData[i].weatherData.hourly.precipitationProbability[position],
+                                                     forcastData[i].weatherData.hourly.snowfall[position],
+                                                     forcastData[i].weatherData.hourly.windSpeed10m[position]
+         )
         console.log(long, forcastData[i].weatherData.hourly.temperature2m)
-        const newMarker = this.addMarker([long, lat], tempData )
+        const newMarker = this.addMarker([long, lat], tempData, condition )
         weatherMarkers.push(newMarker)
     };
     const markSource = new VectorSource({
@@ -164,7 +171,15 @@ async loadData(data: {transformedCoordinates: Coordinate[],
     }
 
 // Creates individual marker points with weather data icons and returns the marker
-    addMarker([lon, lat]: number[], temp: string){
+    addMarker([lon, lat]: number[], temp: string, condition: string){
+    let weatherSymbol: string;
+     switch(condition){
+        case('sunny'):
+            weatherSymbol = '../../assets/Icon/sunny.png'; 
+            break;
+        default: 
+            weatherSymbol = '../../assets/Icon/sunny.png'; 
+      };
       var marker = new Feature({
         geometry: new Point(fromLonLat([lon, lat])),
       });
@@ -176,7 +191,7 @@ async loadData(data: {transformedCoordinates: Coordinate[],
           opacity: 1,
           scale: .28,
           declutterMode: 'declutter',
-          src: '../../assets/Icon/sunny.png'
+          src: weatherSymbol
         }),
         text: new Text({
           offsetY: -13,
@@ -204,6 +219,31 @@ async loadData(data: {transformedCoordinates: Coordinate[],
       this.map.removeLayer(layers[1]);
       this.map.removeLayer(layers[2]);
     }
+  }
+
+
+  // create weather definitions for a singular condition
+  defineCondition(cloudCover: number, 
+                  isDay: number, 
+                  precipitation: number, 
+                  precipitationProbability: number,
+                  snowfall: number,
+                  windSpeed: number
+                ){
+      let condition: string = 'sunny';
+      console.log(cloudCover, isDay, precipitation, precipitationProbability, snowfall, windSpeed)
+      
+      // Use if/else block to determine weather symbol based on set of conditions
+      // '../../assets/Icon/cloudy-rain.png' cloudy-rain
+      // '../../assets/Icon/sunny.png' sunny
+      // '../../assets/Icon/partly-cloudy.png' partly-cloudy
+      // '../../assets/Icon/snow.png' snow
+      // '../../assets/Icon/sunny-rain.png' sunny-rain
+
+      // find icons for windy or potentially dangerous conditions
+
+
+      return condition;
   }
 
 }
