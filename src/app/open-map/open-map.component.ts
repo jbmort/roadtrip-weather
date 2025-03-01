@@ -20,16 +20,16 @@ import BaseLayer from 'ol/layer/Base';
 type forcastDataType = pointDataType[];
 type weatherDataType = {
   hourly: {
-    apparentTemperature: Float32Array,
-    cloudCover: Float32Array,
-    isDay: Float32Array,
-    precipitation: Float32Array,
-    precipitationProbability: Float32Array
-    snowDepth: Float32Array,
-    snowfall: Float32Array,
-    temperature2m: Float32Array,
     time: Array<Date>,
+    temperature2m: Float32Array,
+    apparentTemperature: Float32Array,
+    precipitationProbability: Float32Array,
+    precipitation: Float32Array,
+    snowfall: Float32Array,
+    weatherCode: Float32Array,
+    cloudCover: Float32Array,
     windSpeed10m: Float32Array,
+    isDay: Float32Array,
   }
 }
 type pointDataType = {
@@ -125,7 +125,8 @@ async loadData(data: {transformedCoordinates: Coordinate[],
                                                      forcastData[i].weatherData.hourly.precipitation[position],
                                                      forcastData[i].weatherData.hourly.precipitationProbability[position],
                                                      forcastData[i].weatherData.hourly.snowfall[position],
-                                                     forcastData[i].weatherData.hourly.windSpeed10m[position]
+                                                     forcastData[i].weatherData.hourly.windSpeed10m[position],
+                                                     forcastData[i].weatherData.hourly.weatherCode[position]
          )
         console.log(long, forcastData[i].weatherData.hourly.temperature2m)
         const newMarker = this.addMarker([long, lat], tempData, condition )
@@ -171,15 +172,15 @@ async loadData(data: {transformedCoordinates: Coordinate[],
     }
 
 // Creates individual marker points with weather data icons and returns the marker
-    addMarker([lon, lat]: number[], temp: string, condition: string){
-    let weatherSymbol: string;
-     switch(condition){
-        case('sunny'):
-            weatherSymbol = '../../assets/Icon/sunny.png'; 
-            break;
-        default: 
-            weatherSymbol = '../../assets/Icon/sunny.png'; 
-      };
+    addMarker([lon, lat]: number[], temp: string, weatherCondition: string){
+    // let weatherSymbol: string;
+    //  switch(condition){
+    //     case('sunny'):
+    //         weatherSymbol = '../../assets/Icon/sunny.png'; 
+    //         break;
+    //     default: 
+    //         weatherSymbol = '../../assets/Icon/sunny.png'; 
+    //   };
       var marker = new Feature({
         geometry: new Point(fromLonLat([lon, lat])),
       });
@@ -191,7 +192,7 @@ async loadData(data: {transformedCoordinates: Coordinate[],
           opacity: 1,
           scale: .28,
           declutterMode: 'declutter',
-          src: weatherSymbol
+          src: weatherCondition
         }),
         text: new Text({
           offsetY: -13,
@@ -228,19 +229,25 @@ async loadData(data: {transformedCoordinates: Coordinate[],
                   precipitation: number, 
                   precipitationProbability: number,
                   snowfall: number,
-                  windSpeed: number
+                  windSpeed: number,
+                  weatherCode: number
                 ){
       let condition: string = 'sunny';
-      console.log(cloudCover, isDay, precipitation, precipitationProbability, snowfall, windSpeed)
+      console.log(cloudCover, isDay, precipitation, precipitationProbability, snowfall, windSpeed, weatherCode)
       
-      // Use if/else block to determine weather symbol based on set of conditions
+      // Use switch block to determine weather symbol based on set of conditions
       // '../../assets/Icon/cloudy-rain.png' cloudy-rain
       // '../../assets/Icon/sunny.png' sunny
       // '../../assets/Icon/partly-cloudy.png' partly-cloudy
       // '../../assets/Icon/snow.png' snow
       // '../../assets/Icon/sunny-rain.png' sunny-rain
-
-      // find icons for windy or potentially dangerous conditions
+      // '../../assets/Icon/clear-night.png' moon
+      // '../../assets/Icon/clear-windy.png' sun windy
+      // '../../assets/Icon/cloudy-windy.png' windy with clouds
+      // '../../assets/Icon/lighting.png' lightning no rain
+      // '../../assets/Icon/night-cloudy.png' partly cloudy night
+      // '../../assets/Icon/thunderstorm.png' rainy thunderstorm
+      // '../../assets/Icon/high-wind.png' dangerous wind
 
 
       return condition;

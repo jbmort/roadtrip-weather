@@ -4,16 +4,16 @@ import { Observable, from } from 'rxjs';
 
 type weatherDataType = {
   hourly: {
-    apparentTemperature: Float32Array,
-    cloudCover: Float32Array,
-    isDay: Float32Array,
-    precipitation: Float32Array,
-    precipitationProbability: Float32Array
-    snowDepth: Float32Array,
-    snowfall: Float32Array,
-    temperature2m: Float32Array,
     time: Array<Date>,
+    temperature2m: Float32Array,
+    apparentTemperature: Float32Array,
+    precipitationProbability: Float32Array,
+    precipitation: Float32Array,
+    snowfall: Float32Array,
+    weatherCode: Float32Array,
+    cloudCover: Float32Array,
     windSpeed10m: Float32Array,
+    isDay: Float32Array,
   }
 }
 type pointDataType = {
@@ -28,20 +28,20 @@ export class WeatherService {
   
 
   constructor(){
-    type weatherDataType = {
-      hourly: {
-        apparentTemperature: Float32Array,
-        cloudCover: Float32Array,
-        isDay: Float32Array,
-        precipitation: Float32Array,
-        precipitationProbability: Float32Array
-        snowDepth: Float32Array,
-        snowfall: Float32Array,
-        temperature2m: Float32Array,
-        time: Array<Date>,
-        windSpeed10m: Float32Array,
-      }
-    }
+    // type weatherDataType = {
+    //   hourly: {
+    //     time: Array<Date>,
+    //     temperature2m: Float32Array,
+    //     apparentTemperature: Float32Array,
+    //     precipitationProbability: Float32Array,
+    //     precipitation: Float32Array,
+    //     snowfall: Float32Array,
+    //     weatherCode: Float32Array,
+    //     cloudCover: Float32Array,
+    //     windSpeed10m: Float32Array,
+    //     isDay: Float32Array,
+    //   }
+    // }
   }
 
   
@@ -59,7 +59,7 @@ private async forcast(lat: number, long: number): Promise<weatherDataType> {
     "longitude": long 
     // -93.8852
     ,
-    "hourly": ["temperature_2m", "apparent_temperature", "precipitation_probability", "precipitation", "snowfall", "snow_depth", "cloud_cover", "wind_speed_10m", "is_day"],
+    "hourly": ["temperature_2m", "apparent_temperature", "precipitation_probability", "precipitation", "snowfall", "weather_code", "cloud_cover", "wind_speed_10m", "is_day"],
     "temperature_unit": "fahrenheit",
     "wind_speed_unit": "mph",
     "precipitation_unit": "inch",
@@ -96,7 +96,7 @@ private async forcast(lat: number, long: number): Promise<weatherDataType> {
       precipitationProbability: hourly.variables(2)!.valuesArray()!,
       precipitation: hourly.variables(3)!.valuesArray()!,
       snowfall: hourly.variables(4)!.valuesArray()!,
-      snowDepth: hourly.variables(5)!.valuesArray()!,
+      weatherCode: hourly.variables(5)!.valuesArray()!,
       cloudCover: hourly.variables(6)!.valuesArray()!,
       windSpeed10m: hourly.variables(7)!.valuesArray()!,
       isDay: hourly.variables(8)!.valuesArray()!,
