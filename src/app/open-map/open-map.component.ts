@@ -112,7 +112,7 @@ async loadData(data: {transformedCoordinates: Coordinate[],
  async createMarkers(this: any, map: Map, data: {transformedCoordinates: Coordinate[]; tagLocations: Coordinate[]},
       weatherService : WeatherService){
     let forcastData =  await this.loadData(data, weatherService)
-
+        console.log(forcastData)
     let weatherMarkers = []
 
     for (let i = 0; i < forcastData.length; ++i ){
@@ -173,14 +173,6 @@ async loadData(data: {transformedCoordinates: Coordinate[],
 
 // Creates individual marker points with weather data icons and returns the marker
     addMarker([lon, lat]: number[], temp: string, weatherCondition: string){
-    // let weatherSymbol: string;
-    //  switch(condition){
-    //     case('sunny'):
-    //         weatherSymbol = '../../assets/Icon/sunny.png'; 
-    //         break;
-    //     default: 
-    //         weatherSymbol = '../../assets/Icon/sunny.png'; 
-    //   };
       var marker = new Feature({
         geometry: new Point(fromLonLat([lon, lat])),
       });
@@ -232,24 +224,103 @@ async loadData(data: {transformedCoordinates: Coordinate[],
                   windSpeed: number,
                   weatherCode: number
                 ){
-      let condition: string = 'sunny';
+      let condition: string = '../../assets/Icon/sunny.png';
       console.log(cloudCover, isDay, precipitation, precipitationProbability, snowfall, windSpeed, weatherCode)
       
+      //attribute for "The Icon Tree" and "Kosonicon" and "Alfredo Hernandez" and "smashicons"
       // Use switch block to determine weather symbol based on set of conditions
-      // '../../assets/Icon/cloudy-rain.png' cloudy-rain
-      // '../../assets/Icon/sunny.png' sunny
-      // '../../assets/Icon/partly-cloudy.png' partly-cloudy
-      // '../../assets/Icon/snow.png' snow
-      // '../../assets/Icon/sunny-rain.png' sunny-rain
-      // '../../assets/Icon/clear-night.png' moon
-      // '../../assets/Icon/clear-windy.png' sun windy
-      // '../../assets/Icon/cloudy-windy.png' windy with clouds
-      // '../../assets/Icon/lighting.png' lightning no rain
-      // '../../assets/Icon/night-cloudy.png' partly cloudy night
-      // '../../assets/Icon/thunderstorm.png' rainy thunderstorm
-      // '../../assets/Icon/high-wind.png' dangerous wind
-
-
+      switch(weatherCode){
+// Clear Sky x
+          case 0: if(windSpeed > 40){condition = '../../assets/Icon/high-wind.png'}
+                  else {if(isDay == 0){
+                      condition = '../../assets/Icon/clear-night.png';
+                    }
+                  else {
+                      if(windSpeed > 20){
+                        condition = '../../assets/Icon/clear-windy.png';
+                      }
+                      else{
+                      condition = '../../assets/Icon/sunny.png';
+                    }}}
+                    break;
+      
+// Partly Cloudy 
+          case 1:
+          case 2: if(windSpeed > 40){condition = '../../assets/Icon/high-wind.png'}
+                  else {
+                  if(isDay == 0){
+                      condition = '../../assets/Icon/night-cloudy.png';
+                    }
+                  else {
+                      condition = '../../assets/Icon/partly-cloudy.png';
+                    }}
+                    break;
+// Cloudy 
+          case 3: if(windSpeed > 40){condition = '../../assets/Icon/high-wind.png'}
+                  else {
+                    if(windSpeed > 20){condition = '../../assets/Icon/windy.png'}
+                    else{
+                    condition = '../../assets/Icon/cloud.png';
+                    }
+                  }
+                  break;
+     
+// Foggy
+          case 45:
+          case 48: condition = '../../assets/Icon/foggy.png';
+                   break;
+// Rainy 
+          case 51:
+          case 53:
+          case 55:
+          case 61:
+          case 63:
+          case 65:
+          case 80:
+          case 81:
+          case 82:  if(cloudCover > 60){
+                    condition = '../../assets/Icon/cloudy-rain.png'}
+                    else{
+                    if(isDay == 0){
+                        condition = '../../assets/Icon/night-rain.png';
+                      }
+                    else {
+                        condition = '../../assets/Icon/sunny-rain.png';
+                      }}
+                      break;
+// Freezing Rain          
+          case 66:
+          case 67: condition = '../../assets/Icon/rain-alert.png';
+                   break;
+// Snowy
+          case 71:
+          case 73:
+          case 75:
+          case 77:
+          case 85:
+          case 86:  if(isDay == 0){
+                        condition = 'src/assets/Icon/night-snow.png';
+                      }
+                    else {
+                        condition = '../../assets/Icon/snow.png';
+                      };
+                    break;
+// Thunder Storms 
+          case 95:
+          case 96:
+          case 99:  if(windSpeed > 40){condition = '../../assets/Icon/severe-weather.png'}
+                    else if(precipitation == 0 || precipitationProbability < 15){
+                        condition = '../../assets/Icon/lighting.png';
+                      }
+                    else{
+                        if(isDay == 0){
+                            condition = 'src/assets/Icon/night-thunder.png';
+                          }
+                        else {
+                            condition = '../../assets/Icon/thunderstorm.png';
+                          };}
+                    break;
+      }
       return condition;
   }
 
