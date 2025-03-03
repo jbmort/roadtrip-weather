@@ -13,11 +13,11 @@ import { Observable, from } from 'rxjs';
 })
 export class RouteServiceService {
 
-  getRoute(search: Number[][]): Observable<{transformedCoordinates: Coordinate[], tagLocations: Coordinate[] }> {
+  getRoute(search: Number[][]): Observable<{transformedCoordinates: Coordinate[], tagLocations: Coordinate[], centerPoint: Coordinate }> {
     return from(this.routeCall(search));
   }
 
-  private async routeCall(search: Number[][]): Promise<{transformedCoordinates: Coordinate[], tagLocations: Coordinate[] }> {
+  private async routeCall(search: Number[][]): Promise<{transformedCoordinates: Coordinate[], tagLocations: Coordinate[], centerPoint: Coordinate }> {
     const ors = new Openrouteservice(RouteAPI.apiKey!);
     const directions = await ors.getDirections(
       Profile.DRIVING_CAR,
@@ -39,6 +39,7 @@ export class RouteServiceService {
       let locations: Coordinate[] = [];
       let totalCoords = pathCoordinates.length
       let distanceBetween = totalCoords / totalTags
+      let center = pathCoordinates[(totalCoords/2) + 1]
 
       function getTagLocations( Coordinates:Coordinate[]){
         locations.push(Coordinates[0])
@@ -54,7 +55,7 @@ export class RouteServiceService {
 
      const transformedCoordinates = pathCoordinates.map(coord => fromLonLat([coord[0], coord[1]], 'EPSG:3857'));
 
-     return {transformedCoordinates: transformedCoordinates , tagLocations: locations };
+     return {transformedCoordinates: transformedCoordinates , tagLocations: locations, centerPoint: center };
   }
 
 }

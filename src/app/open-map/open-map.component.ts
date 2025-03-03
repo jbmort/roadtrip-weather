@@ -109,7 +109,7 @@ async loadData(data: {transformedCoordinates: Coordinate[],
     };
 
 // Loads weather data into markers and loads markers into a single layer on the map
- async createMarkers(this: any, map: Map, data: {transformedCoordinates: Coordinate[]; tagLocations: Coordinate[]},
+ async createMarkers(this: any, map: Map, data: {transformedCoordinates: Coordinate[]; tagLocations: Coordinate[], centerPoint: Coordinate},
       weatherService : WeatherService){
     let forcastData =  await this.loadData(data, weatherService)
         console.log(forcastData)
@@ -143,7 +143,7 @@ async loadData(data: {transformedCoordinates: Coordinate[],
 // Creates the route layer with route line and calls for weather marker creation
   buildRoute(points: Number[][]){
       this.routeService.getRoute(points).subscribe(
-        (data: {transformedCoordinates: Coordinate[], tagLocations: Coordinate[] }) => {
+        (data: {transformedCoordinates: Coordinate[], tagLocations: Coordinate[], centerPoint: Coordinate }) => {
           this.transformedCoordinates = data.transformedCoordinates;
           
           const multiLineString = new MultiLineString([this.transformedCoordinates]);
@@ -167,7 +167,12 @@ async loadData(data: {transformedCoordinates: Coordinate[],
             })
           });
 
-          this.map.addLayer(vectorLayer)
+          this.map.addLayer(vectorLayer);
+          console.log(data.centerPoint);
+          // this.map.getView().adjustZoom(1, fromLonLat(data.centerPoint))
+          // this.map.getView().adjustCenter(fromLonLat(data.centerPoint));
+          this.map.getView().setCenter(fromLonLat(data.centerPoint))
+          this.map.getView().setZoom(4)
         })
     }
 
