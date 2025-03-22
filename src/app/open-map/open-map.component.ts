@@ -62,7 +62,7 @@ export class OpenMapComponent implements OnInit {
         view: new View({
           projection: 'EPSG:3857',
         center: fromLonLat([-93.0, 40.0]),
-        zoom: 6
+        zoom: 3
       }),
       layers: [
           new TileLayer({
@@ -143,8 +143,9 @@ async loadData(data: {transformedCoordinates: Coordinate[],
 // Creates the route layer with route line and calls for weather marker creation
   buildRoute(points: Number[][]){
       this.routeService.getRoute(points).subscribe(
-        (data: {transformedCoordinates: Coordinate[], tagLocations: Coordinate[], centerPoint: Coordinate }) => {
+        (data: {transformedCoordinates: Coordinate[], tagLocations: Coordinate[], centerPoint: Coordinate, zoomValue: Number }) => {
           this.transformedCoordinates = data.transformedCoordinates;
+          let zoom = data.zoomValue as number
           
           const multiLineString = new MultiLineString([this.transformedCoordinates]);
           this.createMarkers(this.map, data, this.weatherService)
@@ -170,7 +171,7 @@ async loadData(data: {transformedCoordinates: Coordinate[],
           this.map.addLayer(vectorLayer);
           console.log(data.centerPoint);
           this.map.getView().setCenter(fromLonLat(data.centerPoint))
-          this.map.getView().setZoom(4)
+          this.map.getView().setZoom(zoom)
         })
     }
 

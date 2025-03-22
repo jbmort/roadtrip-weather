@@ -46,7 +46,7 @@ export class LocationSearchComponent implements OnInit {
         }),
         switchMap(() => this.geocodeService.autoCompletion.pipe(map(options => this.filterOptions(options))))
       );
-      
+
       this.startingList.subscribe(
         (list) => {this.startLocations = list}
       )
@@ -75,7 +75,7 @@ export class LocationSearchComponent implements OnInit {
   filterOptions(options: {title: string, coordinates: [Number, Number]}[]){
     return options.filter(option => {
       const parts = option.title.split(',').map(part => part.trim());
-      if (parts.length === 3) {
+      if (parts.length > 2) {
         return true; // Keep if it matches "city, state, country"
       }
       return false; // Filter out if it doesn't 
@@ -95,9 +95,6 @@ export class LocationSearchComponent implements OnInit {
   //   }
   // }
 
-
-
-  // TODO: filter incoming results to only include those that have a city, state, and country
 
   displayFn(location: {title: string, coordinates: Number[]} | string): string {
     return typeof location === 'object' ? location.title : location;
