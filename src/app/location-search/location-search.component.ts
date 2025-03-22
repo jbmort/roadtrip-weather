@@ -7,7 +7,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { AsyncPipe } from '@angular/common';
-import { debounceTime, filter, Observable, switchMap, tap } from 'rxjs';
+import { debounceTime, filter, map, Observable, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-location-search',
@@ -35,7 +35,7 @@ export class LocationSearchComponent implements OnInit {
         tap((title) => {
           this.geocodeService.autoComplete(title);
         }),
-        switchMap(() => this.geocodeService.autoCompletion)
+        switchMap(() => this.geocodeService.autoCompletion.pipe(map(options => this.filterOptions(options))))
       );
 
       this.endingList = this.ending.valueChanges.pipe(
@@ -44,9 +44,9 @@ export class LocationSearchComponent implements OnInit {
         tap((title) => {
           this.geocodeService.autoComplete(title);
         }),
-        switchMap(() => this.geocodeService.autoCompletion)
+        switchMap(() => this.geocodeService.autoCompletion.pipe(map(options => this.filterOptions(options))))
       );
-
+      
       this.startingList.subscribe(
         (list) => {this.startLocations = list}
       )
@@ -72,6 +72,14 @@ export class LocationSearchComponent implements OnInit {
     this.searchService.search(startingPoint.coordinates, endingPoint.coordinates)
   }
 
+  filterOptions(options: {title: string, coordinates: [Number, Number]}[]){
+    return options.filter(option => {
+      const parts = option.title.split(',').map(part => part.trim());
+      if (parts.length === 3) {
+        return true; // Keep if it matches "city, state, country"
+      }
+      return false; // Filter out if it doesn't 
+  })}
 
   // updateStart(){
   //   if(this.start.value?.length! > 3){
@@ -86,6 +94,10 @@ export class LocationSearchComponent implements OnInit {
   //   this.geocodeService.autoComplete(this.routeForm.value.ending!)
   //   }
   // }
+
+
+
+  // TODO: filter incoming results to only include those that have a city, state, and country
 
   displayFn(location: {title: string, coordinates: Number[]} | string): string {
     return typeof location === 'object' ? location.title : location;

@@ -128,7 +128,7 @@ async loadData(data: {transformedCoordinates: Coordinate[],
                                                      forcastData[i].weatherData.hourly.windSpeed10m[position],
                                                      forcastData[i].weatherData.hourly.weatherCode[position]
          )
-        console.log(long, forcastData[i].weatherData.hourly.temperature2m)
+        // console.log(long, forcastData[i].weatherData.hourly.temperature2m)
         const newMarker = this.addMarker([long, lat], tempData, condition )
         weatherMarkers.push(newMarker)
     };
@@ -169,8 +169,6 @@ async loadData(data: {transformedCoordinates: Coordinate[],
 
           this.map.addLayer(vectorLayer);
           console.log(data.centerPoint);
-          // this.map.getView().adjustZoom(1, fromLonLat(data.centerPoint))
-          // this.map.getView().adjustCenter(fromLonLat(data.centerPoint));
           this.map.getView().setCenter(fromLonLat(data.centerPoint))
           this.map.getView().setZoom(4)
         })
@@ -237,7 +235,7 @@ async loadData(data: {transformedCoordinates: Coordinate[],
       switch(weatherCode){
 // Clear Sky x
           case 0: if(windSpeed > 40){condition = '../../assets/Icon/high-wind.png'}
-                  else {if(isDay == 0){
+                  else {if(isDay == 1){
                       condition = '../../assets/Icon/clear-night.png';
                     }
                   else {
@@ -253,7 +251,7 @@ async loadData(data: {transformedCoordinates: Coordinate[],
           case 1:
           case 2: if(windSpeed > 40){condition = '../../assets/Icon/high-wind.png'}
                   else {
-                  if(isDay == 0){
+                  if(isDay == 1){
                       condition = '../../assets/Icon/night-cloudy.png';
                     }
                   else {
@@ -286,7 +284,7 @@ async loadData(data: {transformedCoordinates: Coordinate[],
           case 82:  if(cloudCover > 60){
                     condition = '../../assets/Icon/cloudy-rain.png'}
                     else{
-                    if(isDay == 0){
+                    if(isDay == 1){
                         condition = '../../assets/Icon/night-rain.png';
                       }
                     else {
@@ -303,7 +301,7 @@ async loadData(data: {transformedCoordinates: Coordinate[],
           case 75:
           case 77:
           case 85:
-          case 86:  if(isDay == 0){
+          case 86:  if(isDay == 1){
                         condition = 'src/assets/Icon/night-snow.png';
                       }
                     else {
@@ -318,7 +316,7 @@ async loadData(data: {transformedCoordinates: Coordinate[],
                         condition = '../../assets/Icon/lighting.png';
                       }
                     else{
-                        if(isDay == 0){
+                        if(isDay == 1){
                             condition = 'src/assets/Icon/night-thunder.png';
                           }
                         else {
