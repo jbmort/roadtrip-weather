@@ -1,0 +1,25 @@
+/* .header{
+    -webkit-box-shadow: 0px 8px 24px 1px rgba(73,81,125,0.41);
+    -moz-box-shadow: 0px 8px 24px 1px rgba(73,81,125,0.41);
+    box-shadow: 0px 8px 24px 1px rgba(73,81,125,0.41);
+
+
+} */
+
+.roboto-italic {
+    font-family: "Roboto", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: italic;
+    font-variation-settings:
+      "wdth" 100;
+  }
+
+  .roboto-title {
+    font-family: "Roboto", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    font-variation-settings:
+      "wdth" 100;
+  }

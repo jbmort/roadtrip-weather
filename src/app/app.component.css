@@ -1,4 +1,10 @@
 /* .example-full-width {
     width: 100%;
   } */
-
+.all{
+  background: rgb(166,227,246);
+  background: -moz-linear-gradient(186deg, rgba(166,227,246,1) 7%, rgba(145,185,212,1) 44%, rgba(94,134,173,1) 100%);
+  background: -webkit-linear-gradient(186deg, rgba(166,227,246,1) 7%, rgba(145,185,212,1) 44%, rgba(94,134,173,1) 100%);
+  background: linear-gradient(186deg, rgba(166,227,246,1) 7%, rgba(145,185,212,1) 44%, rgba(94,134,173,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#a6e3f6",endColorstr="#5e86ad",GradientType=1);
+}

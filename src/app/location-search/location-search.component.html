@@ -1,8 +1,9 @@
-<form class="example-form">
+<div class="search mt-3">
+<form class="search-form container">
 
-<div class="row">
+<div class="row align-items-start ms-1">
 
-    <mat-form-field class="col-md-6">
+    <mat-form-field class="col-md-4 col-sm-6 ms-2 p-1">
       <mat-label>Starting Point</mat-label>
       <input type="text" matInput [matAutocomplete]="auto" [formControl]="start" (optionSelected)="onOptionSelected($event)">
       <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
@@ -12,7 +13,7 @@
       </mat-autocomplete>
     </mat-form-field>
 
-    <mat-form-field class="col-md-6">
+    <mat-form-field class="col-md-4 col-sm-6 p-1">
       <mat-label>Ending Point</mat-label>
       <input type="text" matInput [matAutocomplete]="autoEnding" [formControl]="ending" (optionSelected)="endOptionSelected($event)">
       <mat-autocomplete #autoEnding="matAutocomplete" [displayWith]="endDisplayFn">
@@ -22,9 +23,10 @@
       </mat-autocomplete>
     </mat-form-field>
 
+    <button id="search" class="col-md-1 col-sm-3 justify-content-end btn btn-md mt-3 p-1 ms-1" type="button" (click)="onSearch()" >Search</button>
   </div>
   <div class="row justify-content-end">
-    <button class=" col-md-3 btn btn-info m-3 mt-0" type="button" (click)="onSearch()" >Find Route</button>
   </div>
   
   </form>
+</div>
