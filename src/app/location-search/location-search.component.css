@@ -6,8 +6,10 @@
     max-width: 500px;
     width: 100%;
     margin-top: 16px;
+    z-index: 9999 !important;
   }
   
+
   .example-full-width {
     width: 100%;
   }
@@ -23,6 +25,3 @@ div.mat-mdc-form-field-focus-overlay.ng-tns-c508571215-0.ng-star-inserted .input
     -moz-box-shadow: 0px 0px 40px 7px rgba(102,102,102,0.65);
     box-shadow: 0px 0px 40px 7px rgba(102,102,102,0.65);
   }
-/* #search{
-  width: 40px;
-} */
