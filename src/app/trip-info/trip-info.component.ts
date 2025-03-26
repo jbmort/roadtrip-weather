@@ -10,13 +10,17 @@ import { WeatherService } from '../weather.service';
   styleUrl: './trip-info.component.css'
 })
 export class TripInfoComponent {
+  distance: number = 0;
+  minutes: number = 0;
+  constructor(private routeService: RouteServiceService, private weatherService: WeatherService){
 
-  constructor(private routeService: RouteServiceService, private weatherService: WeatherService){}
+  }
 
   ngOnInit(): void{
     this.routeService.routeData.subscribe({
       next: (data) => {
-        
+        data.distance = this.distance;
+        data.minutes = this.minutes;
       }
     })
   }

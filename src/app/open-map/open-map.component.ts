@@ -91,8 +91,9 @@ async loadData(data: {transformedCoordinates: Coordinate[],
 
       const promises = data.tagLocations.map(point => {
         return new Promise<void>((resolve) => {
-          weatherService.getForcast(point[1], point[0]).subscribe(
-            (weatherData: weatherDataType) => {
+          weatherService.forcast(point[1], point[0]);
+          this.weatherService.routeForcast.subscribe({
+            next: (weatherData: weatherDataType) => {
               let pointData: pointDataType = {
                 coordinate: [point[0], point[1]],
                 weatherData: weatherData
@@ -101,7 +102,7 @@ async loadData(data: {transformedCoordinates: Coordinate[],
                 forcastData.splice(data.tagLocations.indexOf(point), 0,pointData);
               resolve();
             }
-          );
+        });
         });
       });
       await Promise.all(promises);

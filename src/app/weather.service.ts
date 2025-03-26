@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { fetchWeatherApi } from 'openmeteo';
-import { Observable, from } from 'rxjs';
+import { Observable, Subject, from } from 'rxjs';
 
 type weatherDataType = {
   hourly: {
@@ -46,11 +46,13 @@ export class WeatherService {
 
   
 // get forcast data for point based on coordinate point
-getForcast(lat: number, long: number): Observable<weatherDataType> {
-  return from(this.forcast(lat, long));
-}
 
-private async forcast(lat: number, long: number): Promise<weatherDataType> {
+routeForcast = new Subject<weatherDataType>;
+// getForcast(lat: number, long: number): Observable<weatherDataType> {
+//   return from(this.forcast(lat, long));
+// }
+
+public async forcast(lat: number, long: number): Promise<void> {
 	
   const params = {
     "latitude": lat
@@ -104,6 +106,6 @@ private async forcast(lat: number, long: number): Promise<weatherDataType> {
 
 };
 
-return weatherData;
+this.routeForcast.next(weatherData);
 }
 }
