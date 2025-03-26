@@ -16,25 +16,13 @@ import { WeatherService } from '../weather.service';
 import { Point } from 'ol/geom';
 import { SearchService } from '../search.service';
 import BaseLayer from 'ol/layer/Base';
+import { WeatherDataType } from '../Types/weather-data-type';
 
 type forcastDataType = pointDataType[];
-type weatherDataType = {
-  hourly: {
-    time: Array<Date>,
-    temperature2m: Float32Array,
-    apparentTemperature: Float32Array,
-    precipitationProbability: Float32Array,
-    precipitation: Float32Array,
-    snowfall: Float32Array,
-    weatherCode: Float32Array,
-    cloudCover: Float32Array,
-    windSpeed10m: Float32Array,
-    isDay: Float32Array,
-  }
-}
+
 type pointDataType = {
   coordinate: [number, number],
-  weatherData: weatherDataType
+  weatherData: WeatherDataType
 };
 
 @Component({
@@ -93,7 +81,7 @@ async loadData(data: {transformedCoordinates: Coordinate[],
         return new Promise<void>((resolve) => {
           weatherService.forcast(point[1], point[0]);
           this.weatherService.routeForcast.subscribe({
-            next: (weatherData: weatherDataType) => {
+            next: (weatherData: WeatherDataType) => {
               let pointData: pointDataType = {
                 coordinate: [point[0], point[1]],
                 weatherData: weatherData

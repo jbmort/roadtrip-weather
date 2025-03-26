@@ -1,24 +1,25 @@
 import { Injectable } from '@angular/core';
 import { fetchWeatherApi } from 'openmeteo';
 import { Observable, Subject, from } from 'rxjs';
+import { WeatherDataType } from './Types/weather-data-type';
 
-type weatherDataType = {
-  hourly: {
-    time: Array<Date>,
-    temperature2m: Float32Array,
-    apparentTemperature: Float32Array,
-    precipitationProbability: Float32Array,
-    precipitation: Float32Array,
-    snowfall: Float32Array,
-    weatherCode: Float32Array,
-    cloudCover: Float32Array,
-    windSpeed10m: Float32Array,
-    isDay: Float32Array,
-  }
-}
+// type weatherDataType = {
+//   hourly: {
+//     time: Array<Date>,
+//     temperature2m: Float32Array,
+//     apparentTemperature: Float32Array,
+//     precipitationProbability: Float32Array,
+//     precipitation: Float32Array,
+//     snowfall: Float32Array,
+//     weatherCode: Float32Array,
+//     cloudCover: Float32Array,
+//     windSpeed10m: Float32Array,
+//     isDay: Float32Array,
+//   }
+// }
 type pointDataType = {
   coordinate: [number, number],
-  weatherData: weatherDataType
+  weatherData: WeatherDataType
 };
 
 @Injectable({
@@ -47,7 +48,7 @@ export class WeatherService {
   
 // get forcast data for point based on coordinate point
 
-routeForcast = new Subject<weatherDataType>;
+routeForcast = new Subject<WeatherDataType>;
 // getForcast(lat: number, long: number): Observable<weatherDataType> {
 //   return from(this.forcast(lat, long));
 // }
@@ -88,7 +89,7 @@ public async forcast(lat: number, long: number): Promise<void> {
   const hourly = response.hourly()!;
 
   // Note: The order of weather variables in the URL query and the indices below need to match!
-  const weatherData: weatherDataType = {
+  const weatherData: WeatherDataType = {
     hourly: {
       time: range(Number(hourly.time()), Number(hourly.timeEnd()), hourly.interval()).map(
         (t) => new Date((t + utcOffsetSeconds) * 1000)
