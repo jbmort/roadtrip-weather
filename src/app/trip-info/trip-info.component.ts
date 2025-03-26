@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { RouteServiceService } from '../route-service.service';
+import { WeatherService } from '../weather.service';
 
 @Component({
   selector: 'app-trip-info',
@@ -8,5 +10,15 @@ import { Component } from '@angular/core';
   styleUrl: './trip-info.component.css'
 })
 export class TripInfoComponent {
+
+  constructor(private routeService: RouteServiceService, private weatherService: WeatherService){}
+
+  ngOnInit(): void{
+    this.routeService.routeData.subscribe({
+      next: (data) => {
+        
+      }
+    })
+  }
 
 }

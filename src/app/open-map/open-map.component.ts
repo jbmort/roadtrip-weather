@@ -142,8 +142,9 @@ async loadData(data: {transformedCoordinates: Coordinate[],
   
 // Creates the route layer with route line and calls for weather marker creation
   buildRoute(points: Number[][]){
-      this.routeService.getRoute(points).subscribe(
-        (data: {transformedCoordinates: Coordinate[], tagLocations: Coordinate[], centerPoint: Coordinate, zoomValue: Number }) => {
+      this.routeService.routeCall(points)
+      this.routeService.routeData.subscribe({
+        next: (data: {transformedCoordinates: Coordinate[], tagLocations: Coordinate[], centerPoint: Coordinate, zoomValue: Number }) => {
           this.transformedCoordinates = data.transformedCoordinates;
           let zoom = data.zoomValue as number
           
@@ -172,7 +173,7 @@ async loadData(data: {transformedCoordinates: Coordinate[],
           console.log(data.centerPoint);
           this.map.getView().setCenter(fromLonLat(data.centerPoint))
           this.map.getView().setZoom(zoom)
-        })
+        }})
     }
 
 // Creates individual marker points with weather data icons and returns the marker

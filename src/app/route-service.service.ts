@@ -5,7 +5,7 @@ import { fromLonLat } from 'ol/proj';
 import { Coordinate } from 'ol/coordinate';
 import { Profile } from 'openrouteservice/dist/common.js';
 import { DirectionsFormat } from 'openrouteservice/dist/directions.js';
-import { Observable, from } from 'rxjs';
+import { Observable, Subject, from } from 'rxjs';
 import { MatrixMetrics } from 'openrouteservice/dist/matrix';
 
 
@@ -14,11 +14,13 @@ import { MatrixMetrics } from 'openrouteservice/dist/matrix';
 })
 export class RouteServiceService {
 
-  getRoute(search: Number[][]): Observable<{transformedCoordinates: Coordinate[], tagLocations: Coordinate[], centerPoint: Coordinate, zoomValue: Number }> {
-    return from(this.routeCall(search));
-  }
+  routeData = new Subject<{transformedCoordinates: Coordinate[], tagLocations: Coordinate[], centerPoint: Coordinate, zoomValue: Number, distance: number, minutes: number }>;
 
-  private async routeCall(search: Number[][]): Promise<{transformedCoordinates: Coordinate[], tagLocations: Coordinate[], centerPoint: Coordinate, zoomValue: Number }> {
+  // getRoute(search: Number[][]): Observable<{transformedCoordinates: Coordinate[], tagLocations: Coordinate[], centerPoint: Coordinate, zoomValue: Number, distance: number, minutes: number }> {
+  //   return from(this.routeCall(search));
+  // }
+
+  public async routeCall(search: Number[][]): Promise<void> {
     const ors = new Openrouteservice(RouteAPI.apiKey!);
     const directions = await ors.getDirections(
       Profile.DRIVING_CAR,
@@ -58,7 +60,7 @@ export class RouteServiceService {
 
      const transformedCoordinates = pathCoordinates.map(coord => fromLonLat([coord[0], coord[1]], 'EPSG:3857'));
 
-     return {transformedCoordinates: transformedCoordinates , tagLocations: locations, centerPoint: center, zoomValue: zoom };
+     this.routeData.next({transformedCoordinates: transformedCoordinates , tagLocations: locations, centerPoint: center, zoomValue: zoom, distance: distance, minutes: minutes });
   }
 
   zoomValue(distance: number): number {
