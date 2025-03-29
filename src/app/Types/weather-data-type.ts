@@ -15,7 +15,8 @@ export class WeatherDataType {
       windSpeed10m: Float32Array,
       isDay: Float32Array,
     }){
-      this.hourly = new HourlyData( hourly.time,
+      this.hourly = new HourlyData( 
+            hourly.time,
             hourly.temperature2m,
             hourly.apparentTemperature,
             hourly.precipitationProbability,

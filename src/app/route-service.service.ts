@@ -68,7 +68,7 @@ export class RouteServiceService {
 
     const a = 0.02988405;
     const b = -2.06771751;
-    const c = 28.90493554;
+    const c = 27.90493554;
 
     const zoom = a * (logDistance ** 2) + b * logDistance + c;
     return Number(Math.max(3.5, Math.min(15.5, zoom)).toFixed(1));

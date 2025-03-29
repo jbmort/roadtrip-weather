@@ -17,6 +17,8 @@ import { Point } from 'ol/geom';
 import { SearchService } from '../search.service';
 import BaseLayer from 'ol/layer/Base';
 import { WeatherDataType } from '../Types/weather-data-type';
+import { Subject } from 'rxjs';
+import { WeatherDataService } from '../weather-data.service';
 
 type forcastDataType = pointDataType[];
 
@@ -40,7 +42,8 @@ export class OpenMapComponent implements OnInit {
 
   constructor(private routeService: RouteServiceService,
               private weatherService: WeatherService,
-              private searchService: SearchService) {};
+              private searchService: SearchService,
+              private weatherDataService: WeatherDataService) {};
 
   forcastData: Partial<forcastDataType> = []
           
@@ -102,7 +105,8 @@ async loadData(data: {transformedCoordinates: Coordinate[],
       weatherService : WeatherService){
     let forcastData =  await this.loadData(data, weatherService)
         console.log(forcastData)
-    let weatherMarkers = []
+    this.weatherDataService.updateWeatherData(forcastData);
+    let weatherMarkers = [];
 
     for (let i = 0; i < forcastData.length; ++i ){
         let long = forcastData[i].coordinate[0]
