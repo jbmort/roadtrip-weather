@@ -2,3 +2,11 @@
     border: 2px solid rgb(16, 178, 227);
     color: rgb(62, 93, 124);
 }
+
+.roboto {
+    font-family: "Roboto", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-variation-settings:
+      "wdth" 100;
+  }
