@@ -1,11 +1,25 @@
-<div class="container bg-light ms-4">
-    <h2 class="p-3">Trip Summary</h2>
-    <div class="container ps-5 pb-3">
-        <p>Distance: {{tripDistance}}</p>
-        <p>Time: {{tripTime}}</p>
-        <p>Temp: {{tempString}}</p>
-        <p>Precipitation: {{precipitationChance}}</p>
-        <p>Hazardous wind: {{windHazard}}</p>
-        
+<div class="container bg-light ms-4 info-box">
+    <div *ngIf="weatherpoints.length > 0; else intro">
+        <h2 class="p-3">Trip Summary</h2>
+        <div class="container ps-5 pb-3">
+            <p>Distance: {{tripDistance}}</p>
+            <p>Time: {{tripTime}}</p>
+            <p>Temp: {{tempString}}</p>
+            <p>Precipitation: {{precipitationChance}}</p>
+            <p>Hazardous wind: {{windHazard}}</p>
+        </div>
     </div>
+    
+    <ng-template #intro>
+        <h2 class="p-3">What will it be like...</h2>
+        <div class="container ps-5 pb-3">
+            <p><i>What will the weather be like when you get there?</i></p>
+            <p><i>What does the road have in store for you?</i></p>
+            <p><i>How should you pack to be prepared?</i></p>
+            <br/>
+            <p>Search with your starting point and destination to find out just what the weather will be like for your next adventure</p>
+            <br/>
+            <p>Enjoy your Journey!</p>
+        </div>
+    </ng-template>
 </div>

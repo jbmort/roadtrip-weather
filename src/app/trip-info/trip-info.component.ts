@@ -4,6 +4,7 @@ import { WeatherService } from '../weather.service';
 import { WeatherDataType } from '../Types/weather-data-type';
 import { Coordinate } from 'ol/coordinate';
 import { WeatherDataService } from '../weather-data.service';
+import { NgIf } from '@angular/common';
 
 type forcastDataType = pointDataType[];
 
@@ -16,7 +17,7 @@ type pointDataType = {
 @Component({
   selector: 'app-trip-info',
   standalone: true,
-  imports: [],
+  imports: [NgIf],
   templateUrl: './trip-info.component.html',
   styleUrl: './trip-info.component.css'
 })

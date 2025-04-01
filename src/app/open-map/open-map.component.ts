@@ -17,7 +17,6 @@ import { Point } from 'ol/geom';
 import { SearchService } from '../search.service';
 import BaseLayer from 'ol/layer/Base';
 import { WeatherDataType } from '../Types/weather-data-type';
-import { Subject } from 'rxjs';
 import { WeatherDataService } from '../weather-data.service';
 
 type forcastDataType = pointDataType[];
