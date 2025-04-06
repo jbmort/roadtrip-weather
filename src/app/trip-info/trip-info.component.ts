@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { RouteServiceService } from '../route-service.service';
-import { WeatherService } from '../weather.service';
 import { WeatherDataType } from '../Types/weather-data-type';
-import { Coordinate } from 'ol/coordinate';
 import { WeatherDataService } from '../weather-data.service';
 import { NgIf } from '@angular/common';
 
@@ -107,8 +105,6 @@ export class TripInfoComponent {
     let hazardCounter = 0;
 
     for (let i = 0; i < this.weatherpoints.length; ++i ){
-      // let long = forcastData[i].coordinate[0]
-      // let lat = forcastData[i].coordinate[1]
       let position = this.weatherpoints.indexOf(this.weatherpoints[i])
       let temp = Math.round(this.weatherpoints[i].weatherData.hourly.temperature2m[position])
       totalTemp = temp + totalTemp;
@@ -124,35 +120,8 @@ export class TripInfoComponent {
           windHazard = `Hazardous Wind Conditions at ${hazardCounter} points along your route`
         }};
       count= count + 1;
-      console.log(i,temp, totalTemp, hiTemp, lowTemp )
+      // console.log(i,temp, totalTemp, hiTemp, lowTemp )
     }
-      
-    
-      // let condition: string = this.defineCondition(forcastData[i].weatherData.hourly.cloudCover[position],
-      //                                              forcastData[i].weatherData.hourly.isDay[position],
-      //                                              forcastData[i].weatherData.hourly.precipitation[position],
-      //                                              forcastData[i].weatherData.hourly.precipitationProbability[position],
-      //                                              forcastData[i].weatherData.hourly.snowfall[position],
-      //                                              forcastData[i].weatherData.hourly.windSpeed10m[position],
-      //                                              forcastData[i].weatherData.hourly.weatherCode[position]
-      //  )
-    
-    // for(let weather of this.weatherpoints){
-    //   // let temp = weather.hourly.temperature2m[count];
-    //   // totalTemp = temp + totalTemp;
-
-    //   // if (temp > hiTemp){hiTemp = temp};
-    //   // if (temp < lowTemp){lowTemp = temp};
-    //   // if (weather.hourly.precipitationProbability[count] > 0){precip.push(weather.hourly.precipitationProbability[count])};
-    //   // if (weather.hourly.windSpeed10m[count] > 40){
-    //   //   windHazard = "Hazardous Wind Conditions along Route";
-    //   //   hazardCounter =+ 1;
-    //   //   if (hazardCounter > 1){
-    //   //     windHazard = `Hazardous Wind Conditions at ${hazardCounter} points along your route`
-    //   //   }};
-    //   count = count + 1;
-    //   console.log(count, temp)
-    // }
 
     let precipPotential: number = Math.max(...precip);
     let avgTemp = Math.round(totalTemp / (count));
@@ -162,5 +131,10 @@ export class TripInfoComponent {
     this.precipitationChance = `${precipPotential}%`;}
     else {this.precipitationChance = "No Precipitation"}
     this.windHazard = windHazard;
+  }
+
+
+  resetInfo(){
+    this.weatherpoints = [];
   }
 }
