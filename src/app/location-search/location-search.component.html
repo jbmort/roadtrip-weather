@@ -15,7 +15,7 @@
 
     <mat-form-field class="col-md-4 col-sm-6 p-1">
       <mat-label>Ending Point</mat-label>
-      <input type="text" matInput [matAutocomplete]="autoEnding" [formControl]="ending" (optionSelected)="endOptionSelected($event)">
+      <input type="text" required matInput [matAutocomplete]="autoEnding" [formControl]="ending" (optionSelected)="endOptionSelected($event)">
       <mat-autocomplete #autoEnding="matAutocomplete" [displayWith]="endDisplayFn">
         @for (location of endingList | async; track location.title) {
           <mat-option  [value]="location">{{location.title}}</mat-option>

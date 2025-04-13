@@ -69,7 +69,11 @@ export class LocationSearchComponent implements OnInit {
 
     console.log(startingPoint.coordinates, endingPoint.coordinates)
 
+    if(startingPoint.coordinates && endingPoint.coordinates){
+
     this.searchService.search(startingPoint.coordinates, endingPoint.coordinates)
+    }
+    else{console.log("one component does not contain coordinate information")}
   }
 
   filterOptions(options: {title: string, coordinates: [Number, Number]}[]){
