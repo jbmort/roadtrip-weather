@@ -1,8 +1,9 @@
 #map{
     width: 95%;
     min-width: 300px;
-    max-width: 650px;
+    max-width: 95%;
     min-height: 400px;
+
     height: 70vh;
     margin-left: 10px;
     margin-top: 0px;

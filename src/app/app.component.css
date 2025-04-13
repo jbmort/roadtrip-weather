@@ -12,3 +12,7 @@
 .map-block{
   align-content: center;
 }
+
+body{
+  min-width: 100%;
+}

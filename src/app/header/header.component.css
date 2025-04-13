@@ -1,9 +1,9 @@
 .header{
     background-image: url("src/assets/Berlin_Header2.svg");
     opacity: .6;
-    background-position-x: center;
-    background-position-y: bottom;
-    background-size: contain;
+    /* background-position-x: right; */
+    background-position-y:center;
+    background-size:cover;
     mask-image: linear-gradient(to top, transparent 0%, black, black);
     height: 150%;
     z-index: -1;
